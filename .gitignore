@@ -1,0 +1,4 @@
+﻿# EndBoxWeb 静态站
+.DS_Store
+Thumbs.db
+__pycache__/

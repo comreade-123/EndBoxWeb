@@ -1,0 +1,292 @@
+<!doctype html>
+<html
+  lang="zh-CN"
+  data-ef-accent="yellow"
+  data-ef-paper="neutral"
+  data-ef-cut="standard"
+  data-ef-ground="contours"
+  data-ef-density="standard"
+  data-ef-motion="full"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>使用教程 · EndBox 终末地工具箱</title>
+    <meta
+      name="description"
+      content="EndBox 使用教程：安装、账号中心、技能轴、运行提示条、HUD、325 计算器、插件市场、版本更新与常见问题。"
+    />
+    <link rel="icon" href="assets/img/endbox.png" />
+    <script>
+      try {
+        const t = localStorage.getItem('theme');
+        if (t) document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+    <script src="assets/variant.js"></script>
+    <link rel="stylesheet" href="assets/endfield.css" />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body class="ef ef-contours">
+    <div class="scroll-progress" aria-hidden="true"><i></i></div>
+    <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <header class="ef-cmdbar">
+      <a class="brand" href="index.html">
+        <img src="assets/img/endbox.png" alt="" aria-hidden="true" />
+        ENDBOX<span class="zh">终末地工具箱</span>
+      </a>
+      <nav aria-label="页面导航">
+        <a href="index.html#features">功能<small>Features</small></a>
+        <a href="index.html#download">下载<small>Download</small></a>
+        <a href="guide.html" aria-current="page">教程<small>Guide</small></a>
+        <a href="https://github.com/comreade-123/EndBox" rel="noopener">源码<small>GitHub</small></a>
+      </nav>
+      <div class="util">
+        <span class="ef-field" data-clock-date>2026.11.15</span>
+        <span class="ef-field" data-clock>--:--:--</span>
+        <span class="ef-field" data-release-version>v1.1.0</span>
+        <button class="ef-btn small" type="button" data-theme-toggle>深浅</button>
+      </div>
+    </header>
+
+    <div class="guide">
+      <div class="ef-spread">
+        <article class="ef-sheet">
+          <p class="ef-eyebrow slash">Guide</p>
+          <p class="ef-crumb ef-field"><a href="index.html">首页</a><span>使用教程</span></p>
+          <p class="ids">
+            <span class="ef-tag is-current" data-release-version>v1.1.0</span>
+            <span class="ef-kv"><span>平台</span><span>Windows 10 / 11</span></span>
+            <span class="ef-state">便携版</span>
+          </p>
+          <h1 style="margin: 0.6rem 0 0.75rem; font-size: clamp(1.8rem, 4vw, 2.8rem)">使用教程</h1>
+          <p class="ef-lede">
+            EndBox 是给《明日方舟：终末地》玩家用的 Windows 桌面工具箱。下面按模块讲怎么用；只想知道怎么装，看第一节就够。
+          </p>
+          <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+
+          <div class="ef-prose" id="content">
+            <section id="install">
+              <h2>01 · 安装与启动</h2>
+              <p>
+                EndBox 是便携程序，不需要安装器。下载 <code>EndBox-1.1.0-win64.zip</code>，解压到任意目录，
+                双击 <code>EndBox.exe</code> 就能用。程序不写注册表、不进系统目录；卸载时删掉整个文件夹即可。
+              </p>
+              <h3>首次运行</h3>
+              <ol>
+                <li>解压后得到 <code>EndBox/</code> 文件夹：<code>EndBox.exe</code> + <code>_internal/</code> 运行库。</li>
+                <li>双击 <code>EndBox.exe</code>；第一次启动会在同目录创建 <code>userdata/</code>。</li>
+                <li>Windows 弹「已保护你的电脑」时点「更多信息 → 仍要运行」；也可以先运行包里的 <code>1-Start EndBox (first run).bat</code>。</li>
+                <li>要读游戏按键（运行提示条）时，如果游戏本身是管理员权限，EndBox 也用管理员启动。</li>
+              </ol>
+              <p class="ef-notice" data-flag="注意">
+                <span>别放在 <code>C:\Program Files</code> 这类只读目录；写不进去时程序会把数据退回 <code>%APPDATA%\EndBox</code>，能用，但不便携了。</span>
+              </p>
+              <h3>数据目录</h3>
+              <p>便携模式下所有可变数据都在软件同目录的 <code>userdata/</code>：</p>
+              <ul class="ef-ledger">
+                <li><span><code>settings.json</code> 普通设置</span><span class="ef-field">主题 / 窗口 / HUD / 运行设置</span></li>
+                <li><span><code>secure.dat</code> 登录信息</span><span class="ef-field">Windows DPAPI 加密</span></li>
+                <li><span><code>logs/</code> 运行日志</span><span class="ef-field">出问题先看这里</span></li>
+                <li><span><code>timeline.json</code> 当前轴</span><span class="ef-field">自动保存</span></li>
+                <li><span><code>timeline_library.json</code> 轴库</span><span class="ef-field">手动保存的轴</span></li>
+                <li><span><code>plugins/</code> 插件</span><span class="ef-field">市场安装的插件</span></li>
+              </ul>
+            </section>
+
+            <section id="account">
+              <h2>02 · 账号中心</h2>
+              <p>没登录也能用全部功能：账号页会显示一份演示数据并明确标注。想显示自己的资料：</p>
+              <ul>
+                <li><strong>官服</strong>：用森空岛 App 扫码。</li>
+                <li><strong>B 服</strong>：用哔哩哔哩 App 扫码。</li>
+              </ul>
+              <p>
+                登录后能看到：玩家卡（昵称 / UID / 等级 / 服务器）、理智（当前 / 上限 / 恢复速度 / 满溢倒计时）、
+                规模统计、干员列表（等级、突破、潜能、职业、元素）、地区探索、通行证与每日任务、帝江号基建、每日签到。
+              </p>
+              <p class="ef-notice" data-flag="说明">
+                <span>森空岛和 B 站都是社区第三方接口，没有官方 API；读不到的项目会显示「—」，不编造数据。</span>
+              </p>
+            </section>
+
+            <section id="timeline">
+              <h2>03 · 技能轴</h2>
+              <p>技能轴（排轴）把一套连招排成一条有序的轴，运行时提示条会告诉你下一步按什么。</p>
+              <h3>基本操作</h3>
+              <ol>
+                <li>先选 4 名干员组成队伍，顺序就是 1–4 号位。</li>
+                <li>往轴里加步骤：战技 / 连携 / 终结 / 切换干员 / 重击 / 注释 / 换行 / 分段 / 反复。</li>
+                <li>步骤可以拖动排序、撤销重做；轴可以存进轴库，也能导出分享码。</li>
+                <li>顶部实时估算总耗时和技力消耗，用的是游戏数据里的技能时长。</li>
+              </ol>
+              <h3>分享码</h3>
+              <p>点分享会生成一段可以直接粘贴的话，包含干员列表和分享码（<code>EB2:</code> 开头），点一次就能复制整段。</p>
+            </section>
+
+            <section id="runbar">
+              <h2>04 · 运行提示条</h2>
+              <p>点「开始运行」后，屏幕上出现一条置顶的提示条（不抢焦点、点不到），显示当前步骤和下一步按键；主窗口默认最小化。</p>
+              <h3>真实键位</h3>
+              <table>
+                <thead><tr><th>操作</th><th>按键</th></tr></thead>
+                <tbody>
+                  <tr><td>战技 1–4 号位</td><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> 短按</td></tr>
+                  <tr><td>终结技 1–4 号位</td><td>长按 <kbd>1</kbd>–<kbd>4</kbd>（阈值默认 280ms）</td></tr>
+                  <tr><td>连携技</td><td><kbd>E</kbd></td></tr>
+                  <tr><td>切换干员</td><td><kbd>F1</kbd> <kbd>F2</kbd> <kbd>F3</kbd> <kbd>F4</kbd></td></tr>
+                  <tr><td>重击</td><td>左键，提示条只显示不抢按键</td></tr>
+                </tbody>
+              </table>
+              <h3>运行控制</h3>
+              <table>
+                <thead><tr><th>按键</th><th>作用</th></tr></thead>
+                <tbody>
+                  <tr><td><kbd>F8</kbd></td><td>退出运行</td></tr>
+                  <tr><td><kbd>F9</kbd></td><td>回到第一段</td></tr>
+                  <tr><td><kbd>F10</kbd></td><td>整轴反复开关</td></tr>
+                  <tr><td><kbd>F11</kbd></td><td>回到反复起点</td></tr>
+                  <tr><td><kbd>F6</kbd> / <kbd>F7</kbd></td><td>提示条变淡 / 变实</td></tr>
+                </tbody>
+              </table>
+              <h3>按对、按错</h3>
+              <p>
+                按对前进；<strong>按错会直接跳过这一步</strong>，不弹提示，被跳过的卡片标红并抖一下。
+                进入下一步时，新卡片上有白色圆圈收缩提示。默认整轴反复：跑完自动回开头继续，只有 F8 才退出。
+              </p>
+              <p>运行设置里可以调「显示长度」（3–9 格）、长按阈值、提示条透明度和位置，也能改成不自动最小化主窗口。</p>
+            </section>
+
+            <section id="hud">
+              <h2>05 · HUD 覆盖层</h2>
+              <p>
+                HUD 和排轴完全独立，只显示账号、电池、时钟，标题是 Windows 用户名。
+                <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>H</kbd> 开关；鼠标穿透、不抢焦点、不进任务栏，位置 / 缩放 / 透明度在 HUD 页调。
+              </p>
+              <p class="ef-notice" data-flag="注意"><span>独占全屏游戏可能把 HUD 盖住，请用窗口化或无边框模式。</span></p>
+            </section>
+
+            <section id="calc">
+              <h2>06 · 325 计算器</h2>
+              <ul>
+                <li><strong>求解</strong>：给数字串和目标，算出怎么凑到目标；区间 DP + 精确有理数，结果独立复算。</li>
+                <li><strong>随机</strong>：L1–L5 难度、可指定种子，支持积分 / 级数 / 行列式题型。</li>
+              </ul>
+              <p>公式用 LaTeX 实时排版；历史与收藏各保留最近 100 条，可以导出 PNG。</p>
+            </section>
+
+            <section id="plugins">
+              <h2>07 · 插件市场</h2>
+              <p>
+                插件页分「已安装」和「市场」：按分类浏览、搜索、安装、更新、卸载。官方源随程序分发，也能自己加第三方源；
+                安装时先解压到临时目录、校验 sha256 再落盘，不执行市场里的代码。
+              </p>
+              <p class="ef-notice" data-flag="注意"><span>第三方源的插件由你自己判断可信度；权限没声明的能力会被宿主拒绝。</span></p>
+            </section>
+
+            <section id="update">
+              <h2>08 · 版本更新</h2>
+              <p>
+                设置页「版本与更新」会同时查 GitHub Releases 和仓库里的 <code>version.json</code>，
+                有新版时能看到更新日志、打开发布页、忽略这个版本；没网或限流时安静跳过。
+              </p>
+            </section>
+
+            <section id="data">
+              <h2>09 · 数据与隐私</h2>
+              <p>
+                EndBox 不联网做统计，不上传任何数据。登录信息用 Windows DPAPI 加密保存在本机，只有当前 Windows 用户能解密，不进日志也不随分享码发出。
+              </p>
+              <p>游戏数据来自公开数据站快照；头像、技能图标与素材只在本机读取，不随程序分发、不入库。游戏内容版权归鹰角网络所有。</p>
+            </section>
+
+            <section id="faq">
+              <h2>10 · 常见问题</h2>
+              <ul class="ef-ledger">
+                <li><span>双击没反应 / 一闪而过</span><span class="ef-field">先看 userdata/logs/endbox.log；多为解压不完整或杀毒拦截</span></li>
+                <li><span>提示条按键没反应</span><span class="ef-field">游戏是管理员权限时，EndBox 也要以管理员启动</span></li>
+                <li><span>没有毛玻璃</span><span class="ef-field">最大化时关闭；系统不支持时回退纯色，不影响功能</span></li>
+                <li><span>怎么备份轴和设置</span><span class="ef-field">复制整个 userdata/ 目录即可</span></li>
+                <li><span>项目是什么许可</span><span class="ef-field">MIT；游戏素材版权归鹰角网络</span></li>
+              </ul>
+            </section>
+          </div>
+        </article>
+
+        <aside class="ef-margin" aria-label="目录">
+          <div class="toc">
+            <h2 class="ef-field">目录 / Contents</h2>
+            <ol>
+              <li><a href="#install">01 安装与启动</a></li>
+              <li><a href="#account">02 账号中心</a></li>
+              <li><a href="#timeline">03 技能轴</a></li>
+              <li><a href="#runbar">04 运行提示条</a></li>
+              <li><a href="#hud">05 HUD 覆盖层</a></li>
+              <li><a href="#calc">06 325 计算器</a></li>
+              <li><a href="#plugins">07 插件市场</a></li>
+              <li><a href="#update">08 版本更新</a></li>
+              <li><a href="#data">09 数据与隐私</a></li>
+              <li><a href="#faq">10 常见问题</a></li>
+            </ol>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <footer class="site">
+      <div>
+        <h2>EndBox · 终末地工具箱</h2>
+        <p>非官方同人工具，与鹰角网络、哔哩哔哩无关联。游戏素材与数据版权归鹰角网络所有。</p>
+        <p>作者：EthanMaven、DeepSeek-V4.1-Flash · 开源许可：MIT</p>
+      </div>
+      <div>
+        <h2>文档</h2>
+        <ul>
+          <li><a href="index.html">返回首页</a></li>
+          <li><a href="https://github.com/comreade-123/EndBox" rel="noopener">GitHub 仓库</a></li>
+          <li><a href="https://github.com/comreade-123/EndBox/releases" rel="noopener">发布记录</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>技术</h2>
+        <ul>
+          <li>Python 3.11 + PyQt6</li>
+          <li>便携模式 · 不写注册表</li>
+          <li>插件宿主 + sha256 校验</li>
+        </ul>
+      </div>
+    </footer>
+
+    <script type="module">
+      import { wireTheme, wireReadouts } from './assets/fx.js';
+      import { wireRelease } from './assets/release.js';
+      import { wireSiteFx } from './assets/site-fx.js';
+      wireTheme();
+      wireReadouts(document);
+      wireRelease();
+      wireSiteFx();
+
+      const links = [...document.querySelectorAll('.guide .toc a[href^="#"]')];
+      const sections = links
+        .map((a) => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+      const setCurrent = (id) => {
+        links.forEach((a) => {
+          if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'true');
+          else a.removeAttribute('aria-current');
+        });
+      };
+      const io = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((e) => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+          if (visible) setCurrent(visible.target.id);
+        },
+        { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
+      );
+      sections.forEach((s) => io.observe(s));
+    </script>
+  </body>
+</html>

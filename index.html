@@ -1,0 +1,304 @@
+<!doctype html>
+<html
+  lang="zh-CN"
+  data-ef-accent="yellow"
+  data-ef-paper="neutral"
+  data-ef-cut="standard"
+  data-ef-ground="contours"
+  data-ef-density="standard"
+  data-ef-motion="full"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EndBox · 终末地工具箱</title>
+    <meta
+      name="description"
+      content="EndBox 是给《明日方舟：终末地》玩家用的 Windows 桌面工具箱：账号资料、技能轴排轴、独立 HUD、325 计算器、插件市场、版本更新，都在一个窗口里。开源、便携、免安装。"
+    />
+    <meta name="theme-color" content="#F4F4F2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#191919" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="assets/img/endbox.png" />
+    <script>
+      try {
+        const t = localStorage.getItem('theme');
+        if (t) document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+    <script src="assets/variant.js"></script>
+    <link rel="stylesheet" href="assets/endfield.css" />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body class="ef ef-contours">
+    <div class="scroll-progress" aria-hidden="true"><i></i></div>
+    <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <header class="ef-cmdbar">
+      <a class="brand" href="index.html">
+        <img src="assets/img/endbox.png" alt="" aria-hidden="true" />
+        ENDBOX<span class="zh">终末地工具箱</span>
+      </a>
+      <nav aria-label="页面导航">
+        <a href="#features">功能<small>Features</small></a>
+        <a href="#screens">截图<small>Screens</small></a>
+        <a href="#download">下载<small>Download</small></a>
+        <a href="guide.html">教程<small>Guide</small></a>
+        <a href="https://github.com/comreade-123/EndBox" rel="noopener">源码<small>GitHub</small></a>
+      </nav>
+      <div class="util">
+        <span class="ef-field" data-clock-date>2026.11.15</span>
+        <span class="ef-field" data-clock>--:--:--</span>
+        <span class="ef-field" data-release-version>v1.1.0</span>
+        <button class="ef-btn small" type="button" data-theme-toggle>深浅</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="hero-meta ef-field">
+            <time data-release-date>2026.11.15</time>
+            <span>Windows 10 / 11</span>
+            <span>PyQt6</span>
+            <span>MIT</span>
+            <span><b data-release-size>82.7 MB</b> 便携包</span>
+          </p>
+          <h1 class="ef-wordmark">
+            <span class="solid ef-in-drive">ENDBOX</span>
+            <span class="hollow ef-in-drive" style="animation-delay: 140ms" aria-hidden="true">TOOLKIT</span>
+          </h1>
+          <p class="claim"><span class="ef-marker ef-in-stroke">给《明日方舟：终末地》玩家的桌面工具箱</span></p>
+          <p class="bio">
+            账号资料、技能轴排轴、独立 HUD、325 计算器、插件市场、版本更新——都放在一个窗口里。
+            无边框深色界面，跟着系统实时模糊的毛玻璃背景；解压即用，数据都在软件目录，不写注册表。
+          </p>
+          <p class="ef-actions">
+            <a class="ef-btn go" data-release-download href="#download">下载 <span data-release-version>v1.1.0</span> <span class="sub">Windows</span></a>
+            <a class="ef-btn" href="guide.html">阅读教程</a>
+            <a class="ef-btn" href="https://github.com/comreade-123/EndBox" rel="noopener">查看源码</a>
+          </p>
+        </div>
+
+        <div class="hero-art">
+          <figure class="ef-frame">
+            <div class="window">
+              <img src="assets/img/home_dark.png" alt="EndBox 首页：问候语、模块入口与今天的状态" />
+            </div>
+            <figcaption class="ef-plate">首页 / Home — 每次打开先回这里，按时段打招呼，顺手进常用功能。</figcaption>
+          </figure>
+        </div>
+
+        <div class="ef-ticker" aria-label="项目信息">
+          <div class="track">
+            <ul>
+              <li><a href="#download"><b>v1.1.0</b> 已发布：排轴按错自动跳过、系统实时模糊</a></li>
+              <li><a href="#features"><b>34</b> 名干员 · <b>180</b> 条技能数据离线可用</a></li>
+              <li><a href="#features"><b>7</b> 个模块 · 账号 / 排轴 / HUD / 325 / 插件</a></li>
+              <li><a href="https://github.com/comreade-123/EndBox" rel="noopener"><b>445</b> 项自动化测试 · MIT 开源</a></li>
+            </ul>
+            <ul aria-hidden="true">
+              <li><a href="#download" tabindex="-1"><b>v1.1.0</b> 已发布：排轴按错自动跳过、系统实时模糊</a></li>
+              <li><a href="#features" tabindex="-1"><b>34</b> 名干员 · <b>180</b> 条技能数据离线可用</a></li>
+              <li><a href="#features" tabindex="-1"><b>7</b> 个模块 · 账号 / 排轴 / HUD / 325 / 插件</a></li>
+              <li><a href="https://github.com/comreade-123/EndBox" rel="noopener" tabindex="-1"><b>445</b> 项自动化测试 · MIT 开源</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="stat-band" aria-label="真实统计">
+        <div><b data-count="7">7</b><span>个功能模块</span></div>
+        <div><b data-count="34">34</b><span>名干员数据</span></div>
+        <div><b data-count="180">180</b><span>条技能记录</span></div>
+        <div><b data-count="445">445</b><span>项自动化测试</span></div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="section-head">
+          <div>
+            <p class="ef-eyebrow slash">Modules</p>
+            <h2>一个窗口里装下七件事</h2>
+          </div>
+          <p class="ef-field"><span>// 每个模块都能单独使用</span></p>
+        </div>
+
+        <div class="modules">
+          <a class="ef-panel cut-br" href="guide.html#account">
+            <h2>账号中心</h2>
+            <p>森空岛 / B 站扫码登录，玩家卡、理智恢复倒计时、地区探索、通行证与每日任务、帝江号基建、每日签到。</p>
+            <p class="ef-field"><span>// ACCOUNT</span></p>
+          </a>
+          <a class="ef-panel cut-tr" href="guide.html#timeline">
+            <h2>技能轴</h2>
+            <p>4 人编队，战技 / 连携 / 终结 / 切换 / 重击 / 注释 / 分段 / 反复排成一条有序的轴；拖拽、撤销重做、轴库、分享码。</p>
+            <p class="ef-field"><span>// TIMELINE</span></p>
+          </a>
+          <a class="ef-panel cut-bl" href="guide.html#runbar">
+            <h2>运行提示条</h2>
+            <p>置顶显示下一步按什么：数字短按战技、长按终结、E 连携、F1–F4 切换。按错自动跳过并标红，整轴默认反复。</p>
+            <p class="ef-field"><span>// RUN BAR</span></p>
+          </a>
+          <a class="ef-panel cut-tl" href="guide.html#hud">
+            <h2>HUD 覆盖层</h2>
+            <p>跟排轴完全独立：只显示账号、电池、时钟。鼠标穿透、不抢焦点、不进任务栏，Ctrl+Alt+H 开关。</p>
+            <p class="ef-field"><span>// HUD</span></p>
+          </a>
+          <a class="ef-panel cut-br" href="guide.html#calc">
+            <h2>325 计算器</h2>
+            <p>求解模式凑 325，随机模式出题（L1–L5、种子、积分 / 级数 / 行列式），LaTeX 实时排版，历史与收藏可导出。</p>
+            <p class="ef-field"><span>// CALCULATOR</span></p>
+          </a>
+          <a class="ef-panel cut-tr" href="guide.html#plugins">
+            <h2>插件市场</h2>
+            <p>已安装 / 市场分栏，分类、搜索、安装、更新、卸载；官方源随程序分发，也能加第三方源，zip 校验 sha256。</p>
+            <p class="ef-field"><span>// PLUGINS</span></p>
+          </a>
+          <a class="ef-panel cut-bl" href="guide.html#update">
+            <h2>版本更新</h2>
+            <p>设置页检查 GitHub Releases 与仓库版本声明，能看更新日志、打开发布页、忽略版本；断网时安静跳过。</p>
+            <p class="ef-field"><span>// UPDATE</span></p>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" id="screens">
+        <div class="section-head">
+          <div>
+            <p class="ef-eyebrow slash">Screens</p>
+            <h2>界面长这样</h2>
+          </div>
+          <p class="ef-field"><span>// 深色主题 · 实际运行截图</span></p>
+        </div>
+
+        <div class="gallery">
+          <figure class="ef-frame">
+            <div class="window"><img src="assets/img/timeline_dark.png" alt="技能轴编辑界面：编队、步骤列表与时间轴" /></div>
+            <figcaption class="ef-plate">技能轴 / Timeline — 左边编队，中间步骤，右边细节。</figcaption>
+          </figure>
+          <figure class="ef-frame">
+            <div class="window"><img src="assets/img/account_data_dark.png" alt="账号中心：玩家卡、理智、干员列表" /></div>
+            <figcaption class="ef-plate">账号中心 / Account — 玩家卡、理智、干员列表。</figcaption>
+          </figure>
+          <figure class="ef-frame">
+            <div class="window"><img src="assets/img/plugins_market_dark.png" alt="插件市场：分类、搜索、安装" /></div>
+            <figcaption class="ef-plate">插件市场 / Market — 官方源与第三方源。</figcaption>
+          </figure>
+          <figure class="ef-frame">
+            <div class="window"><img src="assets/img/settings_update_dark.png" alt="设置页的版本与更新" /></div>
+            <figcaption class="ef-plate">版本与更新 / Update — 双来源检查，能看日志。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="start">
+        <div class="section-head">
+          <div>
+            <p class="ef-eyebrow slash">Get started</p>
+            <h2>四步开始用</h2>
+          </div>
+          <p class="ef-field"><a href="guide.html">// 完整说明见教程</a></p>
+        </div>
+
+        <ol class="ef-records">
+          <li><a class="ef-record" href="guide.html#install"><span class="ef-tag">01</span><span class="name ef-read">解压</span><span class="ef-field">下载 zip 解压到任意目录，双击 EndBox.exe；数据在旁边的 userdata/</span></a></li>
+          <li><a class="ef-record" href="guide.html#account"><span class="ef-tag">02</span><span class="name ef-read">看账号</span><span class="ef-field">扫码绑定森空岛或 B 站；没绑定也能用全部功能</span></a></li>
+          <li><a class="ef-record" href="guide.html#timeline"><span class="ef-tag">03</span><span class="name ef-read">排轴</span><span class="ef-field">选 4 名干员，把战技、连携、终结按顺序排成一条轴</span></a></li>
+          <li><a class="ef-record" href="guide.html#runbar"><span class="ef-tag">04</span><span class="name ef-read">运行</span><span class="ef-field">点开始运行，提示条置顶显示下一步；按对前进，F8 退出</span></a></li>
+        </ol>
+      </section>
+
+      <section class="section" id="download">
+        <div class="section-head">
+          <div>
+            <p class="ef-eyebrow slash">Download</p>
+            <h2 data-release-title>下载 EndBox 1.1.0</h2>
+          </div>
+          <p class="ef-field"><span>// Windows 10 / 11 · 64 位</span></p>
+        </div>
+
+        <div class="download">
+          <div>
+            <p class="ef-actions" style="margin-top: 0">
+              <a class="ef-btn go" data-release-release href="https://github.com/comreade-123/EndBox/releases/latest" rel="noopener">
+                前往 GitHub Releases <span class="sub">推荐</span>
+              </a>
+              <a class="ef-btn" href="guide.html#install">安装说明</a>
+            </p>
+            <p class="ef-notice" data-flag="注意">
+              <span>首次运行 Windows 可能弹「已保护你的电脑」——这是 SmartScreen 对未签名程序的常规提示，不是报毒。点「更多信息 → 仍要运行」，或先运行包里的 1-Start EndBox (first run).bat。</span>
+            </p>
+            <ol class="ef-records" style="margin-top: 1.25rem">
+              <li><a class="ef-record" href="#download"><span class="ef-tag">01</span><span class="name ef-read">下载 zip</span><span class="ef-field"><code data-release-zip>EndBox-1.1.0-win64.zip</code></span></a></li>
+              <li><a class="ef-record" href="#download"><span class="ef-tag">02</span><span class="name ef-read">解压并双击</span><span class="ef-field">EndBox.exe，首次启动创建 userdata/</span></a></li>
+              <li><a class="ef-record" href="#download"><span class="ef-tag">03</span><span class="name ef-read">可选：管理员启动</span><span class="ef-field">游戏以管理员运行时才需要</span></a></li>
+            </ol>
+          </div>
+
+          <div class="file ef-panel">
+            <div class="ef-figs">
+              <div><b data-release-version>v1.1.0</b><span>版本</span></div>
+              <div><b data-release-size>82.7 MB</b><span>包大小</span></div>
+              <div><b>Win 64</b><span>平台</span></div>
+            </div>
+            <p class="ef-field"><span>// <code data-release-zip>EndBox-1.1.0-win64.zip</code></span></p>
+            <p class="hash" data-release-sha>SHA256 D809731250FEE797A25DAD9D6854F06AFFECC70BDBFA82A10857FAB60931D459</p>
+            <p class="ef-field" style="margin-top: 1rem"><span>用户数据：settings / 登录信息 / 日志 / 轴库 / 历史，都在 userdata/</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="section-head">
+          <div>
+            <p class="ef-eyebrow slash">FAQ</p>
+            <h2>常见问题</h2>
+          </div>
+          <p class="ef-field"><a href="guide.html#faq">// 更多见教程</a></p>
+        </div>
+
+        <div class="faq">
+          <div class="ef-panel"><details><summary>需要登录游戏账号吗？</summary><p>不登录也能用全部功能。官服用森空岛 App 扫码，B 服用哔哩哔哩 App 扫码；登录信息用 Windows DPAPI 加密存在本机，只有当前用户能读。</p></details></div>
+          <div class="ef-panel"><details><summary>运行提示条按错会怎样？</summary><p>按错直接跳过这一步、不给弹窗，被跳过的卡片标红并抖一下；进入下一步时白色圆圈收缩提示，整条轴不会卡住。</p></details></div>
+          <div class="ef-panel"><details><summary>游戏要以管理员运行怎么办？</summary><p>游戏是管理员权限时，EndBox 也用管理员启动才能读到按键（Windows UIPI 限制）。不用按键功能时可以普通启动。</p></details></div>
+          <div class="ef-panel"><details><summary>为什么界面有时没有毛玻璃？</summary><p>毛玻璃是 Windows 系统实时模糊，最大化时会关闭；系统或显卡驱动不支持时回退纯色背景，不影响功能。</p></details></div>
+          <div class="ef-panel"><details><summary>数据存在哪里？重装会丢吗？</summary><p>默认在软件同目录的 userdata/；程序目录写不了时退回 %APPDATA%\EndBox。覆盖安装不会删数据。</p></details></div>
+          <div class="ef-panel"><details><summary>项目开源吗？</summary><p>MIT 许可。界面文案、模块、插件 API 都有文档；游戏数据与素材版权归鹰角网络，只在本机使用、不随程序分发。</p></details></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site">
+      <div>
+        <h2>EndBox · 终末地工具箱</h2>
+        <p>非官方同人工具，与鹰角网络、哔哩哔哩无关联。游戏素材与数据版权归鹰角网络所有。</p>
+        <p>作者：EthanMaven、DeepSeek-V4.1-Flash · 开源许可：MIT</p>
+      </div>
+      <div>
+        <h2>文档</h2>
+        <ul>
+          <li><a href="guide.html">使用教程</a></li>
+          <li><a href="https://github.com/comreade-123/EndBox" rel="noopener">GitHub 仓库</a></li>
+          <li><a href="https://github.com/comreade-123/EndBox/releases" rel="noopener">发布记录</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>技术</h2>
+        <ul>
+          <li>Python 3.11 + PyQt6</li>
+          <li>便携模式 · 不写注册表</li>
+          <li>插件宿主 + sha256 校验</li>
+        </ul>
+      </div>
+    </footer>
+
+    <script type="module">
+      import { wireTheme, wireReadouts } from './assets/fx.js';
+      import { wireRelease } from './assets/release.js';
+      import { wireSiteFx } from './assets/site-fx.js';
+      wireTheme();
+      wireReadouts(document);
+      wireRelease();
+      wireSiteFx();
+    </script>
+  </body>
+</html>
