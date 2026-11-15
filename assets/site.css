@@ -1106,3 +1106,29 @@ footer.site a {
     grid-column: 1 / -1;
   }
 }
+
+
+/* 插件开发页的代码块 */
+.guide .ef-prose pre {
+  margin: 1rem 0;
+  padding: 0.9rem 1rem;
+  background: #161616;
+  color: #ededed;
+  border-left: 3px solid var(--ef-signal);
+  overflow-x: auto;
+  font-family: var(--ef-font-mono);
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+.guide .ef-prose pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  white-space: pre;
+}
+
+.guide .ef-prose code {
+  font-family: var(--ef-font-mono);
+  font-size: 0.88em;
+}

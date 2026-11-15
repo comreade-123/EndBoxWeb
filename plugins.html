@@ -1,0 +1,358 @@
+<!doctype html>
+<html
+  lang="zh-CN"
+  data-ef-accent="yellow"
+  data-ef-paper="neutral"
+  data-ef-cut="standard"
+  data-ef-ground="contours"
+  data-ef-density="standard"
+  data-ef-motion="full"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>插件开发 · EndBox 终末地工具箱</title>
+    <meta
+      name="description"
+      content="EndBox 插件开发教程：目录与 plugin.json、PluginContext API、权限、调试、打包与发布到插件市场。"
+    />
+    <link rel="icon" href="assets/img/endbox.png" />
+    <script>
+      try {
+        const t = localStorage.getItem('theme');
+        if (t) document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+    <script src="assets/variant.js"></script>
+    <link rel="stylesheet" href="assets/endfield.css" />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body class="ef ef-contours">
+    <div class="scroll-progress" aria-hidden="true"><i></i></div>
+    <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <header class="ef-cmdbar">
+      <a class="brand" href="index.html">
+        <img src="assets/img/endbox.png" alt="" aria-hidden="true" />
+        ENDBOX<span class="zh">终末地工具箱</span>
+      </a>
+      <nav aria-label="页面导航">
+        <a href="index.html#features">功能<small>Features</small></a>
+        <a href="index.html#download">下载<small>Download</small></a>
+        <a href="guide.html">教程<small>Guide</small></a>
+        <a href="plugins.html" aria-current="page">插件开发<small>Plugins</small></a>
+        <a href="https://github.com/comreade-123/EndBox" rel="noopener">源码<small>GitHub</small></a>
+      </nav>
+      <div class="util">
+        <span class="ef-field" data-clock-date>2026.11.15</span>
+        <span class="ef-field" data-clock>--:--:--</span>
+        <span class="ef-field" data-release-version>v1.1.0</span>
+        <button class="ef-btn small" type="button" data-theme-toggle>深浅</button>
+      </div>
+    </header>
+
+    <div class="guide">
+      <div class="ef-spread">
+        <article class="ef-sheet">
+          <p class="ef-eyebrow slash">Plugin Development</p>
+          <p class="ef-crumb ef-field"><a href="index.html">首页</a><span>插件开发</span></p>
+          <p class="ids">
+            <span class="ef-tag is-current">Python 3.11</span>
+            <span class="ef-kv"><span>宿主</span><span>EndBox 1.1.0</span></span>
+            <span class="ef-state">插件 API</span>
+          </p>
+          <h1 style="margin: 0.6rem 0 0.75rem; font-size: clamp(1.8rem, 4vw, 2.8rem)">插件开发</h1>
+          <p class="ef-lede">
+            EndBox 的插件是普通 Python 包：一个目录 + <code>plugin.json</code> + 入口文件。它可以往侧边栏加视图、读写自己的数据、
+            订阅排轴 / 账号的只读快照；宿主负责加载、隔离权限和出问题时的兜底。
+          </p>
+          <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+
+          <div class="ef-prose" id="content">
+            <section id="what">
+              <h2>01 · 插件能做什么</h2>
+              <ul>
+                <li><strong>加视图</strong>：注册一个 <code>BaseView</code> 子类，出现在侧边栏「插件」分组。</li>
+                <li><strong>存数据</strong>：每个插件一份私有 JSON（<code>plugin_data/&lt;id&gt;.json</code>），互相不可见。</li>
+                <li><strong>订阅事件</strong>：<code>timeline.*</code>、<code>account.updated</code>、<code>ui.theme_changed</code>。</li>
+                <li><strong>读快照</strong>：排轴 / 账号的只读快照（需要权限）。</li>
+                <li><strong>上架市场</strong>：打包成 zip、写进索引，用户就能在市场里安装 / 更新 / 卸载。</li>
+              </ul>
+              <p class="ef-notice" data-flag="边界">
+                <span>插件拿不到 AppContext、服务对象、主窗口和凭据；只有下面写明的能力。需要联网请自己发请求，并放到 UI 线程之外。</span>
+              </p>
+            </section>
+
+            <section id="structure">
+              <h2>02 · 目录与 plugin.json</h2>
+              <pre><code>plugins/
+  hello/
+    plugin.json
+    plugin.py
+    README.md</code></pre>
+              <p>插件放两个位置，宿主启动时都会扫描：随程序分发的 <code>plugins/</code>，和用户数据目录下的 <code>userdata/plugins/</code>（市场安装 / 手动放）。同一个 id 只加载一次。</p>
+              <pre><code>{
+  "id": "hello",
+  "name": "你好插件",
+  "version": "0.1.0",
+  "author": "你的名字",
+  "description": "一个最小示例：注册一个视图，显示一句话。",
+  "icon": "spark",
+  "entry": "plugin.py",
+  "order": 50,
+  "min_app_version": "1.1.0",
+  "permissions": []
+}</code></pre>
+              <ul class="ef-ledger">
+                <li><span><code>id</code></span><span class="ef-field">必填，字母/数字/_/./-，字母或数字开头，≤64 字符</span></li>
+                <li><span><code>name</code> / <code>description</code></span><span class="ef-field">显示名与一句话说明</span></li>
+                <li><span><code>version</code></span><span class="ef-field">语义化版本，市场更新比较用</span></li>
+                <li><span><code>entry</code></span><span class="ef-field">入口文件，默认 plugin.py，必须在插件目录内</span></li>
+                <li><span><code>min_app_version</code></span><span class="ef-field">不满足时标记为加载失败，不拖垮主程序</span></li>
+                <li><span><code>permissions</code></span><span class="ef-field">白名单外的权限会被忽略并记日志</span></li>
+              </ul>
+            </section>
+
+            <section id="first">
+              <h2>03 · 写第一个插件</h2>
+              <p>入口必须定义名为 <code>Plugin</code> 的类（建议继承 <code>EndBoxPlugin</code>）。宿主按「包」加载入口，可以用相对导入拆子文件。</p>
+              <pre><code># plugin.py
+from endbox.plugins.api import EndBoxPlugin
+from endbox.ui.views.base import BaseView
+from endbox.ui.kit import Label, Panel
+
+
+class HelloView(BaseView):
+    key = "hello"
+    eyebrow = "HELLO"
+    title = "你好"
+    icon = "spark"
+    sidebar_label = "你好"
+
+    def build(self):
+        panel = Panel("来自插件的问候", "HELLO")
+        panel.add(Label("这个视图是插件注册的。", "muted", wrap=True))
+        self._root.addWidget(panel)
+
+
+class Plugin(EndBoxPlugin):
+    def on_load(self):
+        self.ctx.register_view(
+            HelloView, sidebar_icon="spark", sidebar_label="你好", order=50
+        )
+
+    def on_enable(self):
+        self.ctx.logger.info("hello enabled")
+
+    def on_disable(self):
+        pass
+
+    def on_unload(self):
+        pass</code></pre>
+              <h3>生命周期</h3>
+              <p>宿主调用顺序：导入模块 → <code>Plugin(ctx)</code> → <code>on_load()</code> → <code>on_enable()</code>。禁用 / 重新加载 / 退出会调用 <code>on_disable()</code>、<code>on_unload()</code>。</p>
+              <ul>
+                <li><code>on_load()</code>：注册视图、恢复数据、建立订阅；抛异常 = 该插件加载失败并回滚。</li>
+                <li><code>on_enable()</code> / <code>on_disable()</code>：开关插件；禁用会完整卸载视图与订阅。</li>
+                <li><code>on_unload()</code>：清理定时器、线程等资源；异常只记日志。</li>
+              </ul>
+            </section>
+
+            <section id="api">
+              <h2>04 · PluginContext API</h2>
+              <h3>视图</h3>
+              <pre><code>ctx.register_view(view_cls, sidebar_icon="spark", sidebar_label="计时", order=10)</code></pre>
+              <p><code>view_cls</code> 必须是 <code>BaseView</code> 子类；宿主会生成 <code>plugin_&lt;id&gt;_&lt;key&gt;</code> 的新 key，自动出现在侧边栏「插件」分组。</p>
+              <h3>私有存储</h3>
+              <pre><code>ctx.storage.get("timers", [])
+ctx.storage.set("timers", timers)
+ctx.storage.update({"last_seen": 123})
+ctx.storage.delete("legacy_key")
+ctx.storage.all()</code></pre>
+              <p>写入是「临时文件 + 原子替换」；文件损坏时退回空字典，不会让插件加载失败。卸载插件不会自动删私有数据。</p>
+              <h3>事件订阅</h3>
+              <pre><code>sub = ctx.event_bus.subscribe("timeline.state", handler)   # handler(**payload)
+sub.cancel()</code></pre>
+              <p>允许的主题：<code>account.updated</code>、<code>ui.theme_changed</code>，以及所有 <code>timeline.*</code>。订阅其他主题会抛 <code>PermissionError</code>。</p>
+              <h3>只读快照（需要权限）</h3>
+              <pre><code>snapshot = ctx.timeline_snapshot()   # 需要 timeline:read
+snapshot = ctx.account_snapshot()    # 需要 account:read</code></pre>
+              <p>服务未载入时返回空字典 <code>{}</code>；没申请权限会抛 <code>PermissionError</code>。不要把快照写回宿主。</p>
+            </section>
+
+            <section id="permissions">
+              <h2>05 · 权限与安全</h2>
+              <table>
+                <thead><tr><th>权限</th><th>能力</th><th>数据范围</th></tr></thead>
+                <tbody>
+                  <tr><td><code>timeline:read</code></td><td><code>ctx.timeline_snapshot()</code></td><td>排轴只读快照（时间、编队、事件、Buff）</td></tr>
+                  <tr><td><code>account:read</code></td><td><code>ctx.account_snapshot()</code></td><td>账号只读快照（昵称、UID 脱敏、角色列表）</td></tr>
+                </tbody>
+              </table>
+              <ul>
+                <li>白名单外的权限被忽略并在管理页提示，不会报错。</li>
+                <li>插件拿不到凭据、主窗口和服务对象；网络请求请自行负责，且不要放在 UI 线程。</li>
+                <li>删除 / 清空 / 卸载这类破坏性操作必须先用 <code>endbox.ui.kit.confirm</code> 弹确认框。</li>
+                <li>市场安装只解压、校验 sha256，不执行市场里的代码；真正加载仍由宿主负责。</li>
+              </ul>
+            </section>
+
+            <section id="debug">
+              <h2>06 · 本地调试</h2>
+              <ol>
+                <li>把插件目录放到 <code>userdata/plugins/&lt;id&gt;/</code>（用户插件）或仓库的 <code>plugins/&lt;id&gt;/</code>（随程序分发）。</li>
+                <li>打开插件管理页 → 刷新扫描；改了代码就点「重新加载」，不需要重启程序。</li>
+                <li>加载失败会显示具体原因，同时写进 <code>userdata/logs/endbox.log</code>；先看日志最后几行。</li>
+                <li>界面文案放 <code>assets/text/zh-CN.json</code> 的插件段落，用 <code>from endbox.core.text import t</code> 取值；不要硬编码中文。</li>
+                <li>视图请复用 <code>endbox.ui.kit</code> 的部件（<code>Panel / Label / CutButton / FieldText / InfoFlag</code>），保持和主程序一致。</li>
+              </ol>
+            </section>
+
+            <section id="publish">
+              <h2>07 · 打包与发布到市场</h2>
+              <h3>打包</h3>
+              <pre><code># 打包 plugins/ 与 market/plugins/ 下全部插件，重算 sha256 并更新索引
+python tools/pack_plugin.py --all
+
+# 只打一个
+python tools/pack_plugin.py --plugin plugins/hello
+
+# 校验索引里的 sha256 / size 与包文件是否一致
+python tools/pack_plugin.py --all --check</code></pre>
+              <p>包结构固定为 <code>&lt;id&gt;/plugin.json</code>、<code>&lt;id&gt;/plugin.py</code>…；打包含固定时间戳，同样源码重复打包 sha256 不变。</p>
+              <h3>市场条目</h3>
+              <pre><code>{
+  "schema": 1,
+  "name": "EndBox 官方插件市场",
+  "updated": "2026-11-15",
+  "plugins": [
+    {
+      "id": "hello",
+      "name": "你好插件",
+      "version": "0.1.0",
+      "author": "你的名字",
+      "description": "一句话说明",
+      "icon": "spark",
+      "category": "工具",
+      "tags": ["示例"],
+      "download_url": "packages/hello-0.1.0.zip",
+      "sha256": "64 位小写十六进制",
+      "size": 3409,
+      "min_app_version": "1.1.0",
+      "permissions": []
+    }
+  ]
+}</code></pre>
+              <h3>发布流程</h3>
+              <ol>
+                <li>改插件源码与 <code>plugin.json</code> 里的 <code>version</code>；</li>
+                <li><code>python tools/pack_plugin.py --all</code>；</li>
+                <li><code>python run_tests.py tests/test_market.py -q</code> 校验索引与包一致；</li>
+                <li>提交 <code>market/index.json</code>、<code>market/packages/*.zip</code> 和插件源码；</li>
+                <li>第三方源把索引放到可访问的 HTTPS 地址，用户「插件源 → 添加源」填入即可。</li>
+              </ol>
+              <p class="ef-notice" data-flag="注意">
+                <span>第三方源没有中心化审核：sha256 只能防传输损坏 / 替换，不能证明作者可信。只添加可信来源。</span>
+              </p>
+            </section>
+
+            <section id="examples">
+              <h2>08 · 自带示例</h2>
+              <p>仓库 <code>plugins/</code> 里有 4 个可以直接读的示例：</p>
+              <ul class="ef-ledger">
+                <li><span><code>timers</code></span><span class="ef-field">添加 / 删除倒计时，持久化，到点右上角提示</span></li>
+                <li><span><code>timeline_stats</code></span><span class="ef-field">订阅排轴事件，统计步骤与耗时</span></li>
+                <li><span><code>permission_demo</code></span><span class="ef-field">权限申请 / 拒绝路径演示</span></li>
+                <li><span><code>operator_roster</code></span><span class="ef-field">读取干员数据的只读视图</span></li>
+              </ul>
+              <p>完整开发约定（manifest 字段、市场 schema、安全模型）见仓库 <code>docs/plugins.md</code>。</p>
+            </section>
+
+            <section id="faq">
+              <h2>09 · 常见问题</h2>
+              <ul class="ef-ledger">
+                <li><span>插件不加载</span><span class="ef-field">看插件管理页原因和 userdata/logs/endbox.log；常见是 manifest 字段写错、entry 不存在、min_app_version 不满足</span></li>
+                <li><span>没有出现在侧边栏</span><span class="ef-field">视图要在 on_load 里 register_view；禁用状态不会加载</span></li>
+                <li><span>快照是空的</span><span class="ef-field">对应模块没载入，或没申请权限（会抛 PermissionError）</span></li>
+                <li><span>能调用主程序的内部对象吗</span><span class="ef-field">不能；插件只有 PluginContext 暴露的这几项能力</span></li>
+                <li><span>能联网吗</span><span class="ef-field">可以自己发请求；宿主不提供 HTTP 客户端，注意线程与超时</span></li>
+              </ul>
+            </section>
+          </div>
+        </article>
+
+        <aside class="ef-margin" aria-label="目录">
+          <div class="toc">
+            <h2 class="ef-field">目录 / Contents</h2>
+            <ol>
+              <li><a href="#what">01 插件能做什么</a></li>
+              <li><a href="#structure">02 目录与 manifest</a></li>
+              <li><a href="#first">03 写第一个插件</a></li>
+              <li><a href="#api">04 PluginContext API</a></li>
+              <li><a href="#permissions">05 权限与安全</a></li>
+              <li><a href="#debug">06 本地调试</a></li>
+              <li><a href="#publish">07 打包与发布</a></li>
+              <li><a href="#examples">08 自带示例</a></li>
+              <li><a href="#faq">09 常见问题</a></li>
+            </ol>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <footer class="site">
+      <div>
+        <h2>EndBox · 终末地工具箱</h2>
+        <p>非官方同人工具，与鹰角网络、哔哩哔哩无关联。游戏素材与数据版权归鹰角网络所有。</p>
+        <p>作者：EthanMaven、DeepSeek-V4.1-Flash · 开源许可：MIT</p>
+      </div>
+      <div>
+        <h2>文档</h2>
+        <ul>
+          <li><a href="index.html">返回首页</a></li>
+          <li><a href="guide.html">使用教程</a></li>
+          <li><a href="https://github.com/comreade-123/EndBox" rel="noopener">GitHub 仓库</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>技术</h2>
+        <ul>
+          <li>Python 3.11 + PyQt6</li>
+          <li>插件 API + 权限白名单</li>
+          <li>市场 sha256 校验</li>
+        </ul>
+      </div>
+    </footer>
+
+    <script type="module">
+      import { wireTheme, wireReadouts } from './assets/fx.js';
+      import { wireRelease } from './assets/release.js';
+      import { wireSiteFx } from './assets/site-fx.js';
+      wireTheme();
+      wireReadouts(document);
+      wireRelease();
+      wireSiteFx();
+
+      const links = [...document.querySelectorAll('.guide .toc a[href^="#"]')];
+      const sections = links
+        .map((a) => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+      const setCurrent = (id) => {
+        links.forEach((a) => {
+          if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'true');
+          else a.removeAttribute('aria-current');
+        });
+      };
+      const io = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((e) => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+          if (visible) setCurrent(visible.target.id);
+        },
+        { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
+      );
+      sections.forEach((s) => io.observe(s));
+    </script>
+  </body>
+</html>

@@ -18,6 +18,7 @@ python -m http.server 8765
 | --- | --- |
 | `index.html` | 展示首页：简介、功能模块、运行截图、四步上手、下载、常见问题 |
 | `guide.html` | 使用教程：安装、账号、技能轴、运行提示条、HUD、325、插件、更新、数据隐私、FAQ |
+| `plugins.html` | 插件开发：目录与 manifest、PluginContext API、权限、调试、打包发布到市场 |
 
 ## 版式
 
